@@ -79,3 +79,5 @@ gemini = OpenAI(base_url=GEMINI_BASE_URL, api_key=google_api_key)
 response = gemini.chat.completions.create(model="gemini-2.5-flash-lite", messages=[{"role": "user", "content": "Tell me a fun fact"}])
 
 ```
+
+<img src="./images/flavors_of_llm.png" width="800" />
