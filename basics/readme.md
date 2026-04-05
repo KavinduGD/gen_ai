@@ -65,7 +65,7 @@ response = client.chat.completions.create(
 ```
 
 - We can use openai python library to access other models like gemni, phi, mistral, qwen, deepseek, gpt-oss etc.
-- Openai python library is just a wrapper around the rest API, so we can also use rest API to access other models as well. We just need to change the endpoint an d the model name in the payload.
+- Openai python library is just a wrapper around the rest API, so we can also use rest API to access other models as well. We just need to change the endpoint and the model name in the payload.
 - OpenAI's Chat Completions API was so popular, that the other model providers created endpoints that are identical.
 - They are known as the "OpenAI Compatible Endpoints".
 - For example, google made one here: https://generativelanguage.googleapis.com/v1beta/openai/
@@ -81,3 +81,132 @@ response = gemini.chat.completions.create(model="gemini-2.5-flash-lite", message
 ```
 
 <img src="./images/flavors_of_llm.png" width="800" />
+
+- chat models give us the answer without thinking and evaluate
+- Reasoning models evaluate their first result and again and again to give a better answer
+
+## Token
+
+- In early days models were train character by character, then word by word, but now they are trained on tokens.
+- Neural networks do not understand text
+- They need numbers
+- Before training we convert text in to tokens
+- Then we converts those tokens in to token IDs (Encoding)
+- After training we give our prompt to llms as tokens, They just predict the next tokens as outputs
+
+<img src="./images/text-to-token.png" width="600px">
+<img src="./images/token-to-ID.png" width="600px">
+
+1. Your prompt (input)
+
+   You give:
+
+   ```text
+   "So what is a dog?"
+   ```
+
+2. Tokenization
+
+   The model first converts this into tokens (rough idea):
+
+   ```json
+   ["So", " what", " is", " a", " dog", "?"]
+   ```
+
+   Then into IDs (numbers):
+
+   ```json
+   [512, 91, 42, 11, 987, 5]
+   ```
+
+3. First prediction (important correction)
+
+   👉 The model does NOT first predict "dog" again
+   👉 It predicts the next token AFTER your sentence
+
+   So internally:
+
+   ```text
+   Input: "So what is a dog?"
+   Task: Predict next token
+   ```
+
+4. What might be the first output token?
+
+   The model might predict something like:
+
+   ```text
+   "A"
+   ```
+
+   So now the sequence becomes:
+
+   ```text
+   "So what is a dog? A"
+   ```
+
+5. Next step (autoregressive loop)
+
+   Now the ENTIRE sequence is fed again:
+
+   ```text
+   "So what is a dog? A"
+   → predict next token
+   ```
+
+   Maybe it predicts:
+
+   ```text
+   " dog"
+   ```
+
+   Now:
+
+   ```text
+   "So what is a dog? A dog"
+   ```
+
+6. Repeat again
+
+   ```text
+   "So what is a dog? A dog"
+   → predict next token
+   ```
+
+   Maybe:
+
+   ```text
+   " is"
+   ```
+
+   Now:
+
+   ```text
+   "So what is a dog? A dog is"
+   ```
+
+7. This keeps going
+
+   Token by token:
+
+   ```text
+   "A dog is a domesticated animal that..."
+   ```
+
+   👉 Each time:
+   - Take all previous tokens
+   - Predict ONE next token
+   - Append it
+   - Repeat
+
+- Rule of Thumb
+  - 1 token = 4 characters
+  - 1 token = 0.75 words
+  - 100 token = 75 words
+
+## LLMs generate one token at a time
+
+## Context Window
+
+- input token + output token
+- output tokens also need to be added because we use them in repetitive prediction
