@@ -208,5 +208,7 @@ response = gemini.chat.completions.create(model="gemini-2.5-flash-lite", message
 
 ## Context Window
 
+- AI model's short term memory
+- The maximum number of tokens the model can process at once
 - input token + output token
 - output tokens also need to be added because we use them in repetitive prediction
