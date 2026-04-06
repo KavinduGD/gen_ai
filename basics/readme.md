@@ -212,3 +212,8 @@ response = gemini.chat.completions.create(model="gemini-2.5-flash-lite", message
 - The maximum number of tokens the model can process at once
 - input token + output token
 - output tokens also need to be added because we use them in repetitive prediction
+
+## One-shot prompting vs multi-shot prompting
+
+- One-shot prompting: Providing the model with a single example of the desired output format or behavior in the prompt. This is often used when you want to see how the model responds to a specific instruction or question without giving it multiple examples to learn from.
+- Multi-shot prompting: Providing the model with multiple examples of the desired output format or behavior in the prompt. This can help the model understand the pattern or structure you want it to follow, and can often lead to better performance on tasks that require specific formatting or reasoning.
